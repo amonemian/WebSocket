@@ -25,25 +25,9 @@ public class Client {
             clientEndPoint.addMessageHandler(new WebsocketClientEndpoint.MessageHandler() {
                 public void handleMessage(String message) {
 
-                    System.out.println("MSG: " + message);
-                    if (message.toLowerCase().contains("userid")) {
-                        String token = message.substring(message.indexOf("token") + 10, message.indexOf("token") + 10 + 43);
-                        System.out.println("token: " + token);
-                        userToken[0] = token;
-
-                    }
-
-                    if (message.contains("stream-room-messages")) {
-                        String userName = message.substring(message.indexOf("username") + 13, message.lastIndexOf("name") -5);
-                        System.out.println("UserName: " + userName);
-
-                        if (!userName.startsWith("guest")) {
-
-                            String responseMessage = message.substring(message.lastIndexOf("msg") + 8, message.indexOf("ts")-5);
-                            System.out.println("Response MSG: " + responseMessage);
-                        }
-
-                    }
+                    /*
+                    Handle the receiving messages from the server
+                    */
 
 
                 }
@@ -64,58 +48,13 @@ public class Client {
             Thread.sleep(5000);
 
 
-            String loginMessage = "[\"{\\\"msg\\\":\\\"method\\\",\\\"method\\\":\\\"livechat:registerGuest\\\",\\\"params\\\":[{\\\"token\\\":\\\"" + websocketToken + "\\\",\\\"name\\\":\\\"" + clientName + "\\\",\\\"email\\\":\\\"yyyyyy@yyyyy.com\\\"}],\\\"id\\\":\\\"5\\\"}\"]";
-            System.out.println(loginMessage);
-            clientEndPoint.sendMessage(loginMessage);
-            Thread.sleep(5000);
-
-
-            String finalLoginTokenMessage = "[\"{\\\"msg\\\":\\\"method\\\",\\\"method\\\":\\\"login\\\",\\\"params\\\":[{\\\"resume\\\":\\\"" + userToken[0] + "\\\"}],\\\"id\\\":\\\"6\\\"}\"]";
-            System.out.println(finalLoginTokenMessage);
-            clientEndPoint.sendMessage(finalLoginTokenMessage);
-            Thread.sleep(5000);
-
-            clientEndPoint.sendMessage("[\"{\\\"msg\\\":\\\"method\\\",\\\"method\\\":\\\"sendMessageLivechat\\\",\\\"params\\\":[{\\\"_id\\\":\\\"" + messageId + "\\\",\\\"rid\\\":\\\"" + roomId + "\\\",\\\"msg\\\":\\\"hi hamin\\\",\\\"token\\\":\\\"" + websocketToken + "\\\"}],\\\"id\\\":\\\"8\\\"}\"]");
-            Thread.sleep(5000);
-
-
-            //["{\"msg\":\"sub\",\"id\":\"bxGv6Z2YAnu7pPLTR\",\"name\":\"stream-notify-room\",\"params\":[\"iALtWj53jbv5LjXvq/typing\",false]}"]
-
-            String newId = randomGenerator.randomString(17);
-            String subRequest = "[\"{\\\"msg\\\":\\\"sub\\\",\\\"id\\\":\\\"" + newId + "\\\",\\\"name\\\":\\\"stream-notify-room\\\",\\\"params\\\":[\\\"" + roomId + "/typing\\\",false]}\"]";
-            System.out.println("zero: " + subRequest);
-            clientEndPoint.sendMessage(subRequest);
-            Thread.sleep(5000);
-
-            newId = randomGenerator.randomString(17);
-            subRequest = "[\"{\\\"msg\\\":\\\"sub\\\",\\\"id\\\":\\\"" + newId + "\\\",\\\"name\\\":\\\"stream-room-messages\\\",\\\"params\\\":[\\\"" + roomId + "\\\",false]}\"]";
-            System.out.println("first: " + subRequest);
-            clientEndPoint.sendMessage(subRequest);
-            Thread.sleep(5000);
-
-
-            newId = randomGenerator.randomString(17);
-            subRequest = "[\"{\\\"msg\\\":\\\"sub\\\",\\\"id\\\":\\\"" + newId + "\\\",\\\"name\\\":\\\"stream-livechat-room\\\",\\\"params\\\":[\\\"" + roomId + "\\\",true]}\"]";
-            System.out.println("Second: " + subRequest);
-            clientEndPoint.sendMessage(subRequest);
-            Thread.sleep(5000);
-
-
-            newId = randomGenerator.randomString(17);
-            subRequest = "[\"{\\\"msg\\\":\\\"sub\\\",\\\"id\\\":\\\"" + newId + "\\\",\\\"name\\\":\\\"stream-notify-room\\\",\\\"params\\\":[\\\"" + roomId + "/typing\\\",true]}\"]";
-            System.out.println("Third: " + subRequest);
-            clientEndPoint.sendMessage(subRequest);
-            Thread.sleep(1000);
 
 
 
 
             while (true) {
 
-                messageId = randomGenerator.randomString(7);
-                clientEndPoint.sendMessage("[\"{\\\"msg\\\":\\\"method\\\",\\\"method\\\":\\\"sendMessageLivechat\\\",\\\"params\\\":[{\\\"_id\\\":\\\"" + messageId + "\\\",\\\"rid\\\":\\\"" + roomId + "\\\",\\\"msg\\\":\\\"hi hamin\\\",\\\"token\\\":\\\"" + websocketToken + "\\\"}],\\\"id\\\":\\\"8\\\"}\"]");
-                Thread.sleep(3000);
-
+               // Try to keep the connection alive. very dangerous!
             }
 
 
